@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Options Straddle Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="dashboard">
+        <!-- Header -->
+        <header class="header">
+            <div class="container">
+                <div class="header-content">
+                    <h1 class="dashboard-title">Options Straddle Dashboard</h1>
+                    <div class="market-indicators">
+                        <span class="indicator">VIX: <strong>16.24</strong></span>
+                        <span class="indicator">S&P 500: <strong>5,346.12</strong></span>
+                    </div>
+                </div>
+                <nav class="nav-tabs">
+                    <button class="nav-tab active" data-tab="dashboard">Dashboard</button>
+                    <button class="nav-tab" data-tab="calculator">Straddle Calculator</button>
+                    <button class="nav-tab" data-tab="strategies">Saved Strategies</button>
+                    <button class="nav-tab" data-tab="earnings">Earnings Calendar</button>
+                </nav>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="container">
+                <!-- Dashboard Section -->
+                <section id="dashboard" class="tab-content active">
+                    <div class="overview-cards">
+                        <div class="card metric-card">
+                            <div class="card__body">
+                                <h3>Total Strategies</h3>
+                                <div class="metric-value">0</div>
+                            </div>
+                        </div>
+                        <div class="card metric-card">
+                            <div class="card__body">
+                                <h3>Active Strategies</h3>
+                                <div class="metric-value">0</div>
+                            </div>
+                        </div>
+                        <div class="card metric-card">
+                            <div class="card__body">
+                                <h3>Total Premium at Risk</h3>
+                                <div class="metric-value">$0.00</div>
+                            </div>
+                        </div>
+                        <div class="card metric-card">
+                            <div class="card__body">
+                                <h3>Upcoming Earnings</h3>
+                                <div class="metric-value">20</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card mt-24">
+                        <div class="card__body">
+                            <h3>Recent Activity</h3>
+                            <p class="welcome-message">Welcome to your Options Straddle Dashboard. Start by creating your first strategy using the Straddle Calculator.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Straddle Calculator Section -->
+                <section id="calculator" class="tab-content">
+                    <div class="card">
+                        <div class="card__body">
+                            <h3>Create New Straddle Strategy</h3>
+                            <form id="straddleForm" class="straddle-form">
+                                <div class="form-grid">
+                                    <div class="form-group">
+                                        <label class="form-label" for="stockSymbol">Stock Symbol *</label>
+                                        <input type="text" id="stockSymbol" class="form-control" placeholder="e.g., AAPL" required>
+                                        <div class="error-message" id="stockSymbol-error"></div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="form-label" for="earningsDate">Earnings Date *</label>
+                                        <input type="date" id="earningsDate" class="form-control" required>
+                                        <div class="error-message" id="earningsDate-error"></div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="form-label" for="strikePrice">Strike Price *</label>
+                                        <input type="number" id="strikePrice" class="form-control" placeholder="0.00" min="0" step="0.01" required>
+                                        <div class="error-message" id="strikePrice-error"></div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="form-label" for="callPremium">Call Premium *</label>
+                                        <input type="number" id="callPremium" class="form-control" placeholder="0.00" min="0" step="0.01" required>
+                                        <div class="error-message" id="callPremium-error"></div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="form-label" for="putPremium">Put Premium *</label>
+                                        <input type="number" id="putPremium" class="form-control" placeholder="0.00" min="0" step="0.01" required>
+                                        <div class="error-message" id="putPremium-error"></div>
+                                    </div>
+
+                                    <div class="form-group full-width">
+                                        <label class="form-label" for="notes">Notes (Optional)</label>
+                                        <textarea id="notes" class="form-control" rows="3" placeholder="Add any notes about this strategy..."></textarea>
+                                    </div>
+                                </div>
+
+                                <div class="form-actions">
+                                    <button type="button" id="calculateBtn" class="btn btn--primary">Calculate Strategy</button>
+                                </div>
+                            </form>
+
+                            <!-- Results Section -->
+                            <div id="resultsSection" class="results-section hidden">
+                                <h4>Strategy Results</h4>
+                                <div class="results-grid">
+                                    <div class="result-item">
+                                        <span class="result-label">Maximum Loss:</span>
+                                        <span id="maxLoss" class="result-value loss">-</span>
+                                    </div>
+                                    <div class="result-item">
+                                        <span class="result-label">Maximum Gain:</span>
+                                        <span id="maxGain" class="result-value profit">Unlimited</span>
+                                    </div>
+                                    <div class="result-item">
+                                        <span class="result-label">Upper Breakeven:</span>
+                                        <span id="upperBreakeven" class="result-value">-</span>
+                                    </div>
+                                    <div class="result-item">
+                                        <span class="result-label">Lower Breakeven:</span>
+                                        <span id="lowerBreakeven" class="result-value">-</span>
+                                    </div>
+                                </div>
+                                <button type="button" id="saveStrategyBtn" class="btn btn--secondary mt-16">Save Strategy</button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Saved Strategies Section -->
+                <section id="strategies" class="tab-content">
+                    <div class="card">
+                        <div class="card__body">
+                            <h3>Saved Strategies</h3>
+                            <div id="strategiesTable" class="strategies-table">
+                                <div class="empty-state">
+                                    <p>No saved strategies yet. Create your first strategy using the Straddle Calculator.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Earnings Calendar Section -->
+                <section id="earnings" class="tab-content">
+                    <div class="card">
+                        <div class="card__body">
+                            <h3>Earnings Calendar</h3>
+                            <div class="filter-buttons">
+                                <button class="btn btn--secondary filter-btn active" data-filter="week">Next Week</button>
+                                <button class="btn btn--secondary filter-btn" data-filter="month">Next Month</button>
+                                <button class="btn btn--secondary filter-btn" data-filter="quarter">Next Quarter</button>
+                            </div>
+                            <div id="earningsTable" class="earnings-table mt-16">
+                                <!-- Table will be populated by JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
